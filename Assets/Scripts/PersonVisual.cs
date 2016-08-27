@@ -10,34 +10,71 @@ public class PersonVisual : MonoBehaviour {
 	public Image HairContainer;
 	public PersonData Data;
 
-	public PersonVisual(PersonData data)
+	public PersonVisual()
+	{
+		
+	}
+
+	public void initialize(PersonData data)
 	{
 		Data = data;
-		
-
-
+		updateVisualDisplay();
 	}
 
-	private void setBodySprite()
+	private void updateVisualDisplay()
 	{
+		string sexMod = "";
+		string pigmentMod = "";
+		string eyeColorMod = "";
+		string hairColorMod = "";
+
 		foreach (Gene Attribute in Data.Genes)
 		{
-			if(Attribute.VisualModifierType == VisualSlotModifier.HairColor)
-			{
-			
-				
-			}
+			checkAndAssignMod(ref sexMod, VisualSlotModifier.Sex, Attribute);
+			checkAndAssignMod(ref pigmentMod, VisualSlotModifier.SkinColor, Attribute);
+			checkAndAssignMod(ref eyeColorMod, VisualSlotModifier.EyeColor, Attribute);
+			checkAndAssignMod(ref hairColorMod, VisualSlotModifier.HairColor, Attribute);
 		}
+
+		string bodyAssetString = sexMod + "_" + pigmentMod + "_body";
+		string hairAssetString = sexMod + "_" + hairColorMod + "_hair";
+		string eyeAssetString = eyeColorMod + "_eyes";
+		string headAssetString = pigmentMod + "_head";
+
+		Debug.Log(bodyAssetString);
+
+		BodyContainer.sprite = Main.SpriteAtlas[bodyAssetString];
+		HairContainer.sprite = Main.SpriteAtlas[hairAssetString];
+		EyesContainer.sprite = Main.SpriteAtlas[eyeAssetString];
+		HeadContainer.sprite = Main.SpriteAtlas[headAssetString];
 	}
 
+	private void checkAndAssignMod(ref string modString, VisualSlotModifier modType, Gene Attribute)
+	{
+		if(modString != "")
+		{
+			return;
+		}
+
+		if(modType == Attribute.VisualModifierType)
+		{
+			modString = Attribute.VisualModifierID;
+			Debug.Log("Mod: " + modString);
+		}
+
+		
+	}
 
 	
+
 }
 
 public enum VisualSlotModifier
 {
+	None,
 	SkinColor,
 	Sex,
 	HairColor,
 	EyeColor
+	
 }

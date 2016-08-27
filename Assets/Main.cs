@@ -36,7 +36,7 @@ public class Main : MonoBehaviour {
 		}
 
 		Humans = new List<PersonData>();
-		for(int i = 0; i < 10; i++)
+		for(int i = 0; i < 200; i++)
 		{
 			Humans.Add(PersonData.MakePersonDataFromConfig());
 		}
@@ -45,6 +45,9 @@ public class Main : MonoBehaviour {
 		{
 			GameObject NewHumanVis = GameObject.Instantiate(PersonPrefab);
 			NewHumanVis.transform.SetParent(PeopleContainer);
+			PersonVisual VisComp = NewHumanVis.GetComponent<PersonVisual>();
+			VisComp.initialize(person);
+			
 		}
 	}
 	
