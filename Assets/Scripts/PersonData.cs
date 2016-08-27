@@ -9,32 +9,45 @@ public class PersonData
 	// All data about a person is contained here.
 	// All people have a shared set of Genes
 
-	
+	public string UniqueDNA;
+
 	public PersonData ()
 	{
 		
 	}
 
-	public static PersonData MakePersonDataFromConfig(HumanGenomeConfig genome)
+	public static PersonData MakePersonDataFromConfig()
 	{
 		List<string> DNAList = new List<string>();
 
 		PersonData newData = new PersonData();
-		foreach(GeneConfig geneConfig in Main.genomeConfig.HumanGenome)
+		string aString = "";
+		foreach (GeneConfig geneConfig in Main.instance.genomeConfig.HumanGenome)
 		{
 			// Get randomized status, based on probability
-			List<GeneStatusProb> probList = new List<GeneStatusProb>();
+			List<GeneStatusConfig> probList = new List<GeneStatusConfig>();
 			int totalProbs = 0;
 			for(int i = 0; i < geneConfig.Types.Count; i++)
 			{
 				probList.Add(geneConfig.Types[i]);
 				totalProbs += geneConfig.Types[i].Chances;
 			}
-
-			//DNASequence = 
-			//DNAList.Add
+			//Debug.Log("Prob COunt: " + probList.Count);
+			string status = probList[Random.Range(0, probList.Count)].Status;
+			string searchIndex = geneConfig.Attribute + "::" + status;
+			string marker = Main.instance.TheHumanGenome[searchIndex].DNAMarker.Sequence;
+			DNAList.Add(marker);
+			aString += searchIndex + "\n";
 		}
-
+		
+		foreach(string marker in DNAList)
+		{
+			
+			newData.UniqueDNA += marker;
+		}
+		Debug.Log(aString);
+		//Debug.Log("New Person DNA : \n" + newData.UniqueDNA + "\n" + aString + "\n\n");
+		
 		return newData;
 	}
 

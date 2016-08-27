@@ -4,20 +4,29 @@ using System.Collections.Generic;
 
 public class Main : MonoBehaviour {
 
-	public static Dictionary<string, Gene> TheHumanGenome;
-	public static HumanGenomeConfig genomeConfig;
+	public HumanGenomeConfig genomeConfig;
+	public static Main instance { get; private set; }
+	public Dictionary<string, Gene> TheHumanGenome;
+	public List<PersonData> Humans;
 
 	// Use this for initialization
 	void Start () {
+		instance = this;
 		TheHumanGenome = new Dictionary<string, Gene>();
 		foreach(GeneConfig protoGene in genomeConfig.HumanGenome)
 		{
-			foreach(GeneStatusProb geneType in protoGene.Types)
+			foreach(GeneStatusConfig geneType in protoGene.Types)
 			{
 				Gene newGene = new Gene(protoGene.Attribute, geneType.Status);
 				TheHumanGenome.Add(newGene.IndexName, newGene);
 			}
 			
+		}
+
+		Humans = new List<PersonData>();
+		for(int i = 0; i < 10; i++)
+		{
+			Humans.Add(PersonData.MakePersonDataFromConfig());
 		}
 	}
 	

@@ -7,7 +7,11 @@ using System;
 public class GeneConfig : ScriptableObject
 {
 	public string Attribute;
-	public List<GeneStatusProb> Types;
+	public Vector2 ContainerSize = new Vector2();
+
+	public List<GeneStatusConfig> Types;
+	
+
 }
 
 

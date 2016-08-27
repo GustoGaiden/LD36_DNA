@@ -21,12 +21,14 @@ public class DNASequence
 
 	public DNASequence()
 	{
+		_builder = new StringBuilder();
+		generateSequenceString();
 		Sequence = _builder.ToString();
 	}
 
 	private void generateSequenceString()
 	{
-		_builder = new StringBuilder();
+		
 		
 		string returnSequence = "";
 
