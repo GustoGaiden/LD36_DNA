@@ -1,12 +1,13 @@
 fileFormatVersion: 2
 guid: 433eddf935dbaa24e9910ce4a539569f
-timeCreated: 1472306899
+timeCreated: 1472313525
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
     21300000: blueEyes
     21300002: greenEyes
     21300004: brownEyes
+    21300006: grayEyes
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -79,6 +80,17 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 26
+        y: 0
+        width: 11
+        height: 5
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: grayEyes
+      rect:
+        serializedVersion: 2
+        x: 39
         y: 0
         width: 11
         height: 5
