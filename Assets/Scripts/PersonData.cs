@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Text;
 
 public class PersonData
 {
@@ -9,7 +10,8 @@ public class PersonData
 	// All data about a person is contained here.
 	// All people have a shared set of Genes
 
-	public string UniqueDNA;
+	
+	[SerializeField]
 	public List<Gene> Genes;
 
 	public PersonData ()
@@ -45,5 +47,18 @@ public class PersonData
 		return newData;
 	}
 
+	public string DNAString
+	{
+		get
+		{
+			StringBuilder builder = new StringBuilder();
+			foreach(Gene item in Genes)
+			{
+				builder.Append(item.DNAMarker.Sequence);
+			}
+
+			return builder.ToString();
+		}
+	}
 	
 }

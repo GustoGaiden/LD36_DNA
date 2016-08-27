@@ -8,6 +8,7 @@ public class PersonVisual : MonoBehaviour {
 	public Image EyesContainer;
 	public Image BodyContainer;
 	public Image HairContainer;
+
 	public PersonData Data;
 
 	public PersonVisual()
@@ -41,8 +42,6 @@ public class PersonVisual : MonoBehaviour {
 		string eyeAssetString = eyeColorMod + "_eyes";
 		string headAssetString = pigmentMod + "_head";
 
-		Debug.Log(bodyAssetString);
-
 		BodyContainer.sprite = Main.SpriteAtlas[bodyAssetString];
 		HairContainer.sprite = Main.SpriteAtlas[hairAssetString];
 		EyesContainer.sprite = Main.SpriteAtlas[eyeAssetString];
@@ -59,14 +58,16 @@ public class PersonVisual : MonoBehaviour {
 		if(modType == Attribute.VisualModifierType)
 		{
 			modString = Attribute.VisualModifierID;
-			Debug.Log("Mod: " + modString);
 		}
-
-		
 	}
 
-	
 
+
+	public void OnPersonClicked()
+	{
+		Debug.Log("HumanClicked");
+		Main.eventManager.TriggerEvent(new HumanClickedEvent(this));
+	}
 }
 
 public enum VisualSlotModifier
