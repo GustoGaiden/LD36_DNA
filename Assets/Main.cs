@@ -8,6 +8,8 @@ public class Main : MonoBehaviour {
 	public static Main instance { get; private set; }
 	public Dictionary<string, Gene> TheHumanGenome;
 	public List<PersonData> Humans;
+	public Transform PeopleContainer;
+	public GameObject PersonPrefab;
 
 	// Use this for initialization
 	void Start () {
@@ -27,6 +29,11 @@ public class Main : MonoBehaviour {
 		for(int i = 0; i < 10; i++)
 		{
 			Humans.Add(PersonData.MakePersonDataFromConfig());
+		}
+
+		foreach(PersonData person in Humans)
+		{
+
 		}
 	}
 	
