@@ -7,8 +7,7 @@ using System;
 public class GeneConfig : ScriptableObject
 {
 	public string Attribute;
-	public Vector2 ContainerSize = new Vector2();
-
+	public VisualSlotModifier VisualModifierSlot;
 	public List<GeneStatusConfig> Types;
 	
 

@@ -13,14 +13,19 @@ public class Gene {
 
 	public string Attribute { get; private set; }
 	public string Status { get; private set; }
-	public DNASequence DNAMarker;  // The marker is a permanent string that is generated at staartup.
+	public DNAMarker DNAMarker;  // The marker is a permanent string that is generated at staartup.
 	public string IndexName { get; private set; }
-	
-	public Gene(string attribute, string status)
+	public VisualSlotModifier VisualModifierType { get; private set; }
+	public string VisualModifierID;
+
+
+	public Gene(string attribute, string status, VisualSlotModifier modifier, string modID)
 	{
 		Attribute = attribute;
 		Status = status;
 		IndexName = Attribute + "::" + Status;
-		DNAMarker = new DNASequence();
+		DNAMarker = new DNAMarker();
+		VisualModifierType = modifier;
+		VisualModifierID = modID;
 	}
 }

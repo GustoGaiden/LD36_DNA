@@ -5,24 +5,34 @@ using System.Collections.Generic;
 public class Main : MonoBehaviour {
 
 	public HumanGenomeConfig genomeConfig;
+	public HumanSpriteAtlasConfig spriteAtlasConfig;
+
 	public static Main instance { get; private set; }
 	public Dictionary<string, Gene> TheHumanGenome;
 	public List<PersonData> Humans;
 	public Transform PeopleContainer;
 	public GameObject PersonPrefab;
+	public static Dictionary<string, Sprite> SpriteAtlas;
 
 	// Use this for initialization
 	void Start () {
 		instance = this;
 		TheHumanGenome = new Dictionary<string, Gene>();
-		foreach(GeneConfig protoGene in genomeConfig.HumanGenome)
+
+		SpriteAtlas = new Dictionary<string, Sprite>();
+		foreach (SpriteIdentifier identifier in spriteAtlasConfig.SpriteAtlas)
+		{
+			SpriteAtlas.Add(identifier.ID, identifier.sprite);
+		}
+
+
+		foreach (GeneConfig protoGene in genomeConfig.HumanGenome)
 		{
 			foreach(GeneStatusConfig geneType in protoGene.Types)
 			{
-				Gene newGene = new Gene(protoGene.Attribute, geneType.Status);
+				Gene newGene = new Gene(protoGene.Attribute, geneType.Status, protoGene.VisualModifierSlot, geneType.ModifierID);
 				TheHumanGenome.Add(newGene.IndexName, newGene);
 			}
-			
 		}
 
 		Humans = new List<PersonData>();
@@ -33,7 +43,8 @@ public class Main : MonoBehaviour {
 
 		foreach(PersonData person in Humans)
 		{
-
+			GameObject NewHumanVis = GameObject.Instantiate(PersonPrefab);
+			NewHumanVis.transform.SetParent(PeopleContainer);
 		}
 	}
 	

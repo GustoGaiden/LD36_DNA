@@ -8,10 +8,36 @@ public class PersonVisual : MonoBehaviour {
 	public Image EyesContainer;
 	public Image BodyContainer;
 	public Image HairContainer;
+	public PersonData Data;
 
 	public PersonVisual(PersonData data)
 	{
-		//HeadContainer.sprite = Main.instance.TheHumanGenome[data.UniqueDNA];
+		Data = data;
+		
+
+
 	}
 
+	private void setBodySprite()
+	{
+		foreach (Gene Attribute in Data.Genes)
+		{
+			if(Attribute.VisualModifierType == VisualSlotModifier.HairColor)
+			{
+			
+				
+			}
+		}
+	}
+
+
+	
+}
+
+public enum VisualSlotModifier
+{
+	SkinColor,
+	Sex,
+	HairColor,
+	EyeColor
 }

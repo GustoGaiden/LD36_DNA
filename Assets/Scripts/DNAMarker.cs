@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-public class DNASequence
+public class DNAMarker
 {
 	private static readonly string[] DNACHARS = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F" };
 	public string Sequence { get; private set; } // Hex String
@@ -18,9 +18,11 @@ public class DNASequence
 	private int _maxJunkSize = 10;
 
 	private StringBuilder _builder;
+	private List<string> _IDChunks;
 
-	public DNASequence()
+	public DNAMarker()
 	{
+		_IDChunks = new List<string>();
 		_builder = new StringBuilder();
 		generateSequenceString();
 		Sequence = _builder.ToString();
@@ -28,20 +30,21 @@ public class DNASequence
 
 	private void generateSequenceString()
 	{
-		
-		
 		string returnSequence = "";
 
+		generateJunkChunk();
 		generateIDChunk(); // Starting Chunk
 		int numChunks = Random.Range(_minChunks, _maxChunks);
 		
 		for (int i = 0; i < numChunks; i++)
 		{
-			
+			generateJunkChunk();
+			generateIDChunk();
+			generateJunkChunk();
 		}
 
 		generateIDChunk(); // EndingChunk
-		
+		generateJunkChunk();
 	}
 
 	private void generateIDChunk()
@@ -53,7 +56,7 @@ public class DNASequence
 	private void generateJunkChunk()
 	{
 		int chunkSize = Random.Range(_minJunkSize, _maxJunkSize);
-		generateChunk(chunkSize);
+		generateJunk(chunkSize);
 	}
 
 	private void generateChunk(int chunkSize)
@@ -62,6 +65,15 @@ public class DNASequence
 		for (int i = 0; i < chunkSize; i++)
 		{
 			_builder.Append(GetDNAChar());
+		}
+	}
+
+	private void generateJunk(int chunkSize)
+	{
+
+		for (int i = 0; i < chunkSize; i++)
+		{
+			_builder.Append("_");
 		}
 	}
 
