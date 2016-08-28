@@ -2,10 +2,10 @@
 using System.Collections;
 using UnityEngine.Events;
 
-public class HumanClickedEvent : GameEvent{
+public class HumanSelectPrimaryEvent : GameEvent{
 
 	public PersonVisual visual;
-	public HumanClickedEvent(PersonVisual visComp)
+	public HumanSelectPrimaryEvent(PersonVisual visComp)
 	{
 		visual = visComp;
 	}

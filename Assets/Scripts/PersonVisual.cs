@@ -2,7 +2,8 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class PersonVisual : MonoBehaviour {
+public class PersonVisual : MonoBehaviour
+{
 
 	public Image HeadContainer;
 	public Image EyesContainer;
@@ -13,7 +14,7 @@ public class PersonVisual : MonoBehaviour {
 
 	public PersonVisual()
 	{
-		
+
 	}
 
 	public void initialize(PersonData data)
@@ -50,12 +51,12 @@ public class PersonVisual : MonoBehaviour {
 
 	private void checkAndAssignMod(ref string modString, VisualSlotModifier modType, Gene Attribute)
 	{
-		if(modString != "")
+		if (modString != "")
 		{
 			return;
 		}
 
-		if(modType == Attribute.VisualModifierType)
+		if (modType == Attribute.VisualModifierType)
 		{
 			modString = Attribute.VisualModifierID;
 		}
@@ -65,8 +66,7 @@ public class PersonVisual : MonoBehaviour {
 
 	public void OnPersonClicked()
 	{
-		Debug.Log("HumanClicked");
-		Main.eventManager.TriggerEvent(new HumanClickedEvent(this));
+		Main.eventManager.TriggerEvent(new HumanSelectPrimaryEvent(this));
 	}
 }
 

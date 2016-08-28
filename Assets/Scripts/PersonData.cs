@@ -21,12 +21,9 @@ public class PersonData
 
 	public static PersonData MakePersonDataFromConfig()
 	{
-		
 		List<string> DNAList = new List<string>();
-
 		PersonData newData = new PersonData();
 		newData.Genes = new List<Gene>();
-
 		string aString = "";
 		foreach (GeneConfig geneConfig in Main.instance.genomeConfig.HumanGenome)
 		{
@@ -41,9 +38,13 @@ public class PersonData
 			//Debug.Log("Prob COunt: " + probList.Count);
 			string status = probList[Random.Range(0, probList.Count)].Status;
 			string searchIndex = geneConfig.Attribute + "::" + status;
+			aString += searchIndex + "\n";
 			newData.Genes.Add(Main.instance.TheHumanGenome[searchIndex]);
+
 		}
-		
+
+
+		// Debug.Log("DNA: " + aString);
 		return newData;
 	}
 

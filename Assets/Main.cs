@@ -16,8 +16,10 @@ public class Main : MonoBehaviour {
 	public static EventManager eventManager;
 
 	public Transform PeopleContainer;
-	public Text DNATextComp;
+	public Text PrimaryDNAContainer;
+	public Text SecondaryDNAContainer;
 
+	private bool _usePrimary;
 	// Use this for initialization
 	void Start () {
 
@@ -33,7 +35,7 @@ public class Main : MonoBehaviour {
 		instance = this;
 		eventManager = GetComponent<EventManager>();
 		TheHumanGenome = new Dictionary<string, Gene>();
-
+		_usePrimary = true;
 
 		SpriteAtlas = new Dictionary<string, Sprite>();
 		foreach (SpriteIdentifier identifier in spriteAtlasConfig.SpriteAtlas)
@@ -69,9 +71,8 @@ public class Main : MonoBehaviour {
 		}
 
 
-		eventManager.AddListener<HumanClickedEvent>(onHumanClicked);
+		eventManager.AddListener<HumanSelectPrimaryEvent>(selectPrimary);
 		
-
 		Debug.Log("Time End: " + Time.realtimeSinceStartup);
 	}
 	// Update is called once per frame
@@ -79,16 +80,20 @@ public class Main : MonoBehaviour {
 	
 	}
 
-	private void onHumanClicked(HumanClickedEvent e)
+	private void selectPrimary(HumanSelectPrimaryEvent e)
 	{
-		Debug.Log("Event : " + e);
-		Debug.Log("Viz : " + e.visual);
-		Debug.Log("Data : " + e.visual.Data);
-		Debug.Log("String : " + e.visual.Data.DNAString);
-
-		DNATextComp.text = e.visual.Data.DNAString;
+		if(_usePrimary)
+		{
+			PrimaryDNAContainer.text = e.visual.Data.DNAString;
+		}
+		else
+		{
+			SecondaryDNAContainer.text = e.visual.Data.DNAString;
+		}
+		_usePrimary = !_usePrimary;
 	}
-
+	
+	
 	/*
 	 
 	Select group of people
@@ -132,6 +137,19 @@ public class Main : MonoBehaviour {
 
 		Gene produces a person's DNA string
 		
+
+
+
+
+	Problems:
+		How do you compare several people at once?
+		How do you tell the difference between Junk and DNA id's
+
+
+		How do you determine What the targeted Gene is
+
+
+
 
 	*/
 }
