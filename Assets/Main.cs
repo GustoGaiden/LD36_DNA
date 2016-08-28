@@ -85,6 +85,7 @@ public class Main : MonoBehaviour {
 		if(_usePrimary)
 		{
 			PrimaryDNAContainer.text = e.visual.Data.DNAString;
+			
 		}
 		else
 		{
