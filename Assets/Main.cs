@@ -27,6 +27,11 @@ public class Main : MonoBehaviour {
 
 	private Coroutine _matchRoutine;
 
+	public Text GeneReadout;
+
+	private PersonVisual _primarySelect;
+	private PersonVisual _secondarySelect;
+
 	private bool _usePrimary;
 	// Use this for initialization
 	void Start ()
@@ -37,7 +42,7 @@ public class Main : MonoBehaviour {
 
 	void initialize()
 	{
-		Debug.Log("Time Begin: " + Time.realtimeSinceStartup);
+		
 		instance = this;
 		eventManager = GetComponent<EventManager>();
 		TheHumanGenome = new Dictionary<string, Gene>();
@@ -75,14 +80,11 @@ public class Main : MonoBehaviour {
 		
 		eventManager.AddListener<HumanSelectPrimaryEvent>(selectPrimary);
 		eventManager.AddListener<DNADisplayCompleteEvent>(CheckMatchesInGrids);
+		eventManager.AddListener<SetChunkSelectionEvent>(setGeneReadoutText); 
 
-		Debug.Log("Time End: " + Time.realtimeSinceStartup);
+		
 	}
-	// Update is called once per frame
-	void Update () {
 	
-	}
-
 	private void CheckMatchesInGrids(DNADisplayCompleteEvent e)
 	{
 		if(TopGrid.LayoutInProgress || BottomGrid.LayoutInProgress)
@@ -143,16 +145,38 @@ public class Main : MonoBehaviour {
 		BottomGrid.resetHighlights();
 		if (_usePrimary)
 		{
+			if(_primarySelect != null)
+			{
+				_primarySelect.setSelected(false);
+			}
+			_primarySelect = e.visual;
+			_primarySelect.setSelected(true);
 			TopGrid.setPersonToDisplay(e.visual);
 		}
 		else
 		{
+			if (_secondarySelect != null)
+			{
+				_secondarySelect.setSelected(false);
+			}
+			_secondarySelect = e.visual;
+			_secondarySelect.setSelected(true);
 			BottomGrid.setPersonToDisplay(e.visual);
 		}
 
 		_usePrimary = !_usePrimary;
 	}
 	
+
+	private void setGeneReadoutText(SetChunkSelectionEvent e)
+	{
+		if(e.selectedChunk != null)
+		{
+
+			GeneReadout.text = (e.selectedChunk.isJunk ? ":: JUNK ::" : e.selectedChunk.IndexName);
+		}
+		
+	}
 	
 	/*
 	 

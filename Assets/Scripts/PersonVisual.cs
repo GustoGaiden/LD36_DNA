@@ -10,7 +10,12 @@ public class PersonVisual : MonoBehaviour
 	public Image BodyContainer;
 	public Image HairContainer;
 
+	public Image SelectedImage;
+
 	public PersonData Data;
+
+	private Color _neutralColor = new Color(0f, 0f, 0f, 0f);
+	private Color _selectedColor = new Color(1f, 1f, 1f, .2f);
 
 	public PersonVisual()
 	{
@@ -21,6 +26,7 @@ public class PersonVisual : MonoBehaviour
 	{
 		Data = data;
 		updateVisualDisplay();
+		setSelected(false);
 	}
 
 	private void updateVisualDisplay()
@@ -62,7 +68,10 @@ public class PersonVisual : MonoBehaviour
 		}
 	}
 
-
+	public void setSelected(bool value)
+	{
+		SelectedImage.color = value ? _selectedColor : _neutralColor;
+	}
 
 	public void OnPersonClicked()
 	{

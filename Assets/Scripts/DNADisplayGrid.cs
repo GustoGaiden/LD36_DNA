@@ -75,6 +75,7 @@ public class DNADisplayGrid : MonoBehaviour {
 		foreach (DNAChunkButtonDisplay btn in AllChunks)
 		{
 			btn.setMatch(false);
+			btn.setSelected(false);
 		}
 	}
 
