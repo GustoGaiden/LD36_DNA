@@ -24,7 +24,7 @@ public class Gene {
 		Attribute = attribute;
 		Status = status;
 		IndexName = Attribute + "::" + Status;
-		DNAMarker = new DNAMarker();
+		DNAMarker = new DNAMarker(IndexName);
 		VisualModifierType = modifier;
 		VisualModifierID = modID;
 	}

@@ -11,23 +11,27 @@ public class DNADisplayGrid : MonoBehaviour {
 	private RectTransform _transformComp;
 
 	private List<RectTransform> _textRows;
-	private List<DNAChunkButtonDisplay> _allChunks;
+	public List<DNAChunkButtonDisplay> AllChunks { get; private set; }
 
 	private DNAChunkButtonDisplay _SelectedChunk;
 
-	// Use this for initialization
-	void Start () {
+	public PersonVisual selectedHuman;
+	public PersonVisual HumanPair;
 
+	public bool LayoutInProgress;
+	// Use this for initialization
+	void Start ()
+	{
 		_transformComp = GetComponent<RectTransform>();
 
 		_textRows = new List<RectTransform>();
-		_allChunks = new List<DNAChunkButtonDisplay>();
-
-		
+		AllChunks = new List<DNAChunkButtonDisplay>();
+		LayoutInProgress = false;
 	}
 	
 	public void setPersonToDisplay(PersonVisual visual)
 	{
+		LayoutInProgress = true;
 		StartCoroutine("BuildChunksCoroutine", visual);
 	}
 
@@ -62,11 +66,21 @@ public class DNADisplayGrid : MonoBehaviour {
 				//yield return new WaitForEndOfFrame();
 			}
 		}
+		LayoutInProgress = false;
+		Main.eventManager.TriggerEvent(new DNADisplayCompleteEvent());
+	}
+
+	public void resetHighlights()
+	{
+		foreach (DNAChunkButtonDisplay btn in AllChunks)
+		{
+			btn.setMatch(false);
+		}
 	}
 
 	private DNAChunkButtonDisplay ReviveDeadChunk()
 	{
-		foreach(DNAChunkButtonDisplay btn in _allChunks)
+		foreach(DNAChunkButtonDisplay btn in AllChunks)
 		{
 			if(btn.gameObject.activeSelf == false)
 			{
@@ -78,14 +92,14 @@ public class DNADisplayGrid : MonoBehaviour {
 		DNAChunkButtonDisplay newButton = GameObject.Instantiate(ChunkButtonPrefab);
 		newButton.initialize();
 		//newButton.transform.SetParent(transform);
-		_allChunks.Add(newButton);
+		AllChunks.Add(newButton);
 
 		return newButton;
 	}
 
 	private void clearAllChunks()
 	{
-		foreach (DNAChunkButtonDisplay btn in _allChunks)
+		foreach (DNAChunkButtonDisplay btn in AllChunks)
 		{
 			btn.gameObject.SetActive(false);
 		}

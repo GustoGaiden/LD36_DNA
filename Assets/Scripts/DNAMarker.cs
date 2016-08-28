@@ -20,9 +20,11 @@ public class DNAMarker
 
 	private StringBuilder _builder;
 	public List<DNAChunk> Chunks;
+	public string IndexName { get; private set; }
 
-	public DNAMarker()
+	public DNAMarker(string index)
 	{
+		IndexName = index;
 		Chunks = new List<DNAChunk>();
 		_builder = new StringBuilder();
 		generateAllChunks();
@@ -52,7 +54,7 @@ public class DNAMarker
 	{
 		int chunkSize = Random.Range(_minChunkSize, _maxChunkSize);
 		generateChunk(chunkSize);
-		AddChunkToList();
+		AddChunkToList(false);
 
 
 	}
@@ -61,7 +63,7 @@ public class DNAMarker
 	{
 		int chunkSize = Random.Range(_minJunkSize, _maxJunkSize);
 		generateJunk(chunkSize);
-		AddChunkToList();
+		AddChunkToList(true);
 	}
 
 	private void generateChunk(int chunkSize)
@@ -81,9 +83,9 @@ public class DNAMarker
 		}
 	}
 
-	private void AddChunkToList()
+	private void AddChunkToList(bool isJunk)
 	{
-		DNAChunk newChunk = new DNAChunk(_builder.ToString(), false);
+		DNAChunk newChunk = new DNAChunk(_builder.ToString(), IndexName, isJunk);
 		//Debug.Log("Adding Chunk Sequence: " + _builder.ToString());
 		Chunks.Add(newChunk);
 		clearBuilder();

@@ -14,7 +14,6 @@ public class Main : MonoBehaviour {
 	public static EventManager eventManager;
 	public static Main instance { get; private set; }
 
-
 	public Dictionary<string, Gene> TheHumanGenome;
 	public List<PersonData> Humans;
 	public GameObject PersonPrefab;
@@ -25,14 +24,14 @@ public class Main : MonoBehaviour {
 	public int numPeople = 100;
 	// COntainers
 	public Transform PeopleContainer;
-	
+
+	private Coroutine _matchRoutine;
+
 	private bool _usePrimary;
 	// Use this for initialization
-	void Start () {
-
+	void Start ()
+	{
 		initialize();
-
-
 	}
 	
 
@@ -50,16 +49,13 @@ public class Main : MonoBehaviour {
 			SpriteAtlas.Add(identifier.ID, identifier.sprite);
 		}
 
-
 		foreach (GeneConfig protoGene in genomeConfig.HumanGenome)
 		{
 			foreach (GeneStatusConfig geneType in protoGene.Types)
 			{
 				Gene newGene = new Gene(protoGene.Attribute, geneType.Status, protoGene.VisualModifierSlot, geneType.ModifierID);
 				TheHumanGenome.Add(newGene.IndexName, newGene);
-
 			}
-
 		}
 
 		Humans = new List<PersonData>();
@@ -76,10 +72,10 @@ public class Main : MonoBehaviour {
 			VisComp.initialize(person);
 
 		}
-
-
-		eventManager.AddListener<HumanSelectPrimaryEvent>(selectPrimary);
 		
+		eventManager.AddListener<HumanSelectPrimaryEvent>(selectPrimary);
+		eventManager.AddListener<DNADisplayCompleteEvent>(CheckMatchesInGrids);
+
 		Debug.Log("Time End: " + Time.realtimeSinceStartup);
 	}
 	// Update is called once per frame
@@ -87,12 +83,67 @@ public class Main : MonoBehaviour {
 	
 	}
 
+	private void CheckMatchesInGrids(DNADisplayCompleteEvent e)
+	{
+		if(TopGrid.LayoutInProgress || BottomGrid.LayoutInProgress)
+		{
+			// Wait until both are done
+			return;
+		}
+
+		foreach (DNAChunkButtonDisplay topBtn in TopGrid.AllChunks) 
+		{
+			foreach (DNAChunkButtonDisplay botBtn in BottomGrid.AllChunks)
+			{
+				if (topBtn.chunk.isJunk || botBtn.chunk.isJunk)
+				{
+					// Don't even bother with Junk
+					continue;
+				}
+				
+				if (topBtn.chunk.DNASequence == botBtn.chunk.DNASequence)
+				{
+					topBtn.setMatch(true);
+					botBtn.setMatch(true);
+				}
+			}
+		}
+	}
+
+	private void SelectChunkInBothGrids(DNADisplayCompleteEvent e)
+	{
+		if (TopGrid.LayoutInProgress || BottomGrid.LayoutInProgress)
+		{
+			// Wait until both are done
+			return;
+		}
+
+		foreach (DNAChunkButtonDisplay topBtn in TopGrid.AllChunks)
+		{
+			foreach (DNAChunkButtonDisplay botBtn in BottomGrid.AllChunks)
+			{
+				if (topBtn.chunk.isJunk || botBtn.chunk.isJunk)
+				{
+					// Don't even bother with Junk
+					continue;
+				}
+
+				if (topBtn.chunk.DNASequence == botBtn.chunk.DNASequence)
+				{
+					topBtn.setMatch(true);
+					botBtn.setMatch(true);
+				}
+			}
+		}
+	}
+
 	private void selectPrimary(HumanSelectPrimaryEvent e)
 	{
-		if(_usePrimary)
+		TopGrid.resetHighlights();
+		BottomGrid.resetHighlights();
+		if (_usePrimary)
 		{
 			TopGrid.setPersonToDisplay(e.visual);
-			
 		}
 		else
 		{
