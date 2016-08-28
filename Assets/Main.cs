@@ -5,20 +5,27 @@ using UnityEngine.UI;
 
 public class Main : MonoBehaviour {
 
+	// COnfigs
 	public HumanGenomeConfig genomeConfig;
 	public HumanSpriteAtlasConfig spriteAtlasConfig;
 
+	//Statics
+	public static Dictionary<string, Sprite> SpriteAtlas;
+	public static EventManager eventManager;
 	public static Main instance { get; private set; }
+
+
 	public Dictionary<string, Gene> TheHumanGenome;
 	public List<PersonData> Humans;
 	public GameObject PersonPrefab;
-	public static Dictionary<string, Sprite> SpriteAtlas;
-	public static EventManager eventManager;
 
+	public DNADisplayGrid TopGrid;
+	public DNADisplayGrid BottomGrid;
+
+	public int numPeople = 100;
+	// COntainers
 	public Transform PeopleContainer;
-	public Text PrimaryDNAContainer;
-	public Text SecondaryDNAContainer;
-
+	
 	private bool _usePrimary;
 	// Use this for initialization
 	void Start () {
@@ -56,7 +63,7 @@ public class Main : MonoBehaviour {
 		}
 
 		Humans = new List<PersonData>();
-		for (int i = 0; i < 200; i++)
+		for (int i = 0; i < numPeople; i++)
 		{
 			Humans.Add(PersonData.MakePersonDataFromConfig());
 		}
@@ -84,13 +91,14 @@ public class Main : MonoBehaviour {
 	{
 		if(_usePrimary)
 		{
-			PrimaryDNAContainer.text = e.visual.Data.DNAString;
+			TopGrid.setPersonToDisplay(e.visual);
 			
 		}
 		else
 		{
-			SecondaryDNAContainer.text = e.visual.Data.DNAString;
+			BottomGrid.setPersonToDisplay(e.visual);
 		}
+
 		_usePrimary = !_usePrimary;
 	}
 	

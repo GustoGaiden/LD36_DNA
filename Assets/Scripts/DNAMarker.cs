@@ -6,6 +6,7 @@ using System.Text;
 public class DNAMarker
 {
 	private static readonly string[] DNACHARS = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F" };
+	private static readonly string[] JUNKCHARS = { "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V" };
 	public string Sequence { get; private set; } // Hex String
 	
 	private int _minChunks = 3; // number of chunks that uniquely ID this sequence. Does not include Start/End chunks, which are mandatory
@@ -18,19 +19,19 @@ public class DNAMarker
 	private int _maxJunkSize = 10;
 
 	private StringBuilder _builder;
-	private List<string> _IDChunks;
+	public List<DNAChunk> Chunks;
 
 	public DNAMarker()
 	{
-		_IDChunks = new List<string>();
+		Chunks = new List<DNAChunk>();
 		_builder = new StringBuilder();
-		generateSequenceString();
+		generateAllChunks();
 		Sequence = _builder.ToString();
 	}
 
-	private void generateSequenceString()
+	private void generateAllChunks()
 	{
-		string returnSequence = "";
+		clearBuilder();
 
 		generateJunkChunk();
 		generateIDChunk(); // Starting Chunk
@@ -51,17 +52,20 @@ public class DNAMarker
 	{
 		int chunkSize = Random.Range(_minChunkSize, _maxChunkSize);
 		generateChunk(chunkSize);
+		AddChunkToList();
+
+
 	}
 
 	private void generateJunkChunk()
 	{
 		int chunkSize = Random.Range(_minJunkSize, _maxJunkSize);
 		generateJunk(chunkSize);
+		AddChunkToList();
 	}
 
 	private void generateChunk(int chunkSize)
 	{
-
 		for (int i = 0; i < chunkSize; i++)
 		{
 			_builder.Append(GetDNAChar());
@@ -73,13 +77,32 @@ public class DNAMarker
 
 		for (int i = 0; i < chunkSize; i++)
 		{
-			_builder.Append("_");
+			_builder.Append(GetJunkChar());
 		}
+	}
+
+	private void AddChunkToList()
+	{
+		DNAChunk newChunk = new DNAChunk(_builder.ToString(), false);
+		//Debug.Log("Adding Chunk Sequence: " + _builder.ToString());
+		Chunks.Add(newChunk);
+		clearBuilder();
+	}
+
+	private void clearBuilder()
+	{
+		_builder.Remove(0, _builder.Length);
 	}
 
 	private static string GetDNAChar()
 	{
 		int charIndex = Random.Range(0, DNACHARS.Length);
 		return DNACHARS[charIndex];
+	}
+
+	private static string GetJunkChar()
+	{
+		int charIndex = Random.Range(0, JUNKCHARS.Length);
+		return JUNKCHARS[charIndex];
 	}
 }
